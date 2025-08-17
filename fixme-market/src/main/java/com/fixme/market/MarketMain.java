@@ -1,5 +1,7 @@
 package com.fixme.market;
 
+import com.fixme.common.FixMessage;
+
 import java.io.*;
 import java.net.*;
 
@@ -11,15 +13,20 @@ public class MarketMain {
 
         // Read assigned ID
         String assigned = in.readLine();
-        System.out.println("Market connected. ID: " + assigned);
+        int id = Integer.parseInt(assigned.split(":")[1]);
+        System.out.println("Market connected. ID: " + id);
 
         // Listen for broker messages
         String line;
         while ((line = in.readLine()) != null) {
             System.out.println("Market received: " + line);
 
+            FixMessage msg = new FixMessage(line);
+            int brokerId = msg.getInt("ID");
+            msg.set("Target", brokerId);
+            msg.set("ID", id);
             // Very simple: accept all orders
-            out.println("Executed: " + line);
+            out.println(msg);
         }
     }
 }

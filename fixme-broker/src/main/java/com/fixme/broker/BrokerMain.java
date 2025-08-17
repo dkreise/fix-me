@@ -1,5 +1,7 @@
 package com.fixme.broker;
 
+import com.fixme.common.FixMessage;
+
 import java.io.*;
 import java.net.*;
 
@@ -11,10 +13,18 @@ public class BrokerMain {
 
         // Read assigned ID
         String assigned = in.readLine();
-        System.out.println("Broker connected. ID: " + assigned);
+        int id = Integer.parseInt(assigned.split(":")[1]);
+        System.out.println("Broker connected. ID: " + id);
 
         // Example: send a BUY order to market with ID 200000
-        out.println("200000:BUY Instrument=IBM Qty=10 Price=135.50");
+        FixMessage msg = new FixMessage()
+            .set("ID", id)
+            .set("Target", "200000")
+            .set("Type", "BUY")
+            .set("Instrument", "IBM")
+            .set("Qty", 10)
+            .set("Price", 135.50);
+        out.println(msg.toString());
 
         // Listen for responses
         String line;

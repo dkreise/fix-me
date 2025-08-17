@@ -1,5 +1,7 @@
 package com.fixme.router;
 
+import com.fixme.common.FixMessage;
+
 import java.io.*;
 import java.net.*;
 import java.util.concurrent.*;
@@ -66,12 +68,15 @@ public class RouterMain {
             String line;
             while ((line = in.readLine()) != null) {
                 System.out.println(type + " " + id + " says: " + line);
+                
+                // String[] parts = line.split(":", 2);
+                // if (parts.length < 2) continue;
+                // int targetId = Integer.parseInt(parts[0]);
+                // String msg = parts[1];
 
-                // Parse message format: "TARGET:msg"
-                String[] parts = line.split(":", 2);
-                if (parts.length < 2) continue;
-                int targetId = Integer.parseInt(parts[0]);
-                String msg = parts[1];
+                FixMessage msg = new FixMessage(line);
+                int targetId = msg.getInt("Target");
+                System.out.println("Target::::::::: " + targetId);
 
                 // Forward to target (if exists)
                 Socket target = (type.equals("BROKER")) ? markets.get(targetId) : brokers.get(targetId);

@@ -1,6 +1,10 @@
 package com.fixme.router;
 
 import com.fixme.common.FixMessage;
+import com.fixme.router.handlers.Handler;
+import com.fixme.router.handlers.ValidatorHandler;
+import com.fixme.router.handlers.DestinationHandler;
+import com.fixme.router.handlers.ForwardHandler;
 
 import java.io.*;
 import java.net.*;
@@ -75,17 +79,23 @@ public class RouterMain {
                 // String msg = parts[1];
 
                 FixMessage msg = new FixMessage(line);
-                int targetId = msg.getInt("Target");
-                System.out.println("Target::::::::: " + targetId);
+                // int targetId = msg.getInt("Target");
+                // System.out.println("Target::::::::: " + targetId);
 
-                // Forward to target (if exists)
-                Socket target = (type.equals("BROKER")) ? markets.get(targetId) : brokers.get(targetId);
-                if (target != null) {
-                    PrintWriter out = new PrintWriter(target.getOutputStream(), true);
-                    out.println(msg);
-                } else {
-                    System.out.println("Target " + targetId + " not found!");
-                }
+                // // Forward to target (if exists)
+                // Socket target = (type.equals("BROKER")) ? markets.get(targetId) : brokers.get(targetId);
+                // if (target != null) {
+                //     PrintWriter out = new PrintWriter(target.getOutputStream(), true);
+                //     out.println(msg);
+                // } else {
+                //     System.out.println("Target " + targetId + " not found!");
+                // }
+
+                Handler chain = new ValidatorHandler();
+                chain.linkWith(new DestinationHandler(brokers, markets))
+                        .linkWith(new ForwardHandler());
+
+                chain.handle(msg);
             }
         } catch (IOException e) {
             System.out.println(type + " " + id + " disconnected.");

@@ -3,10 +3,12 @@ package com.fixme.common;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.StringJoiner;
+import java.net.Socket;
 
 public class FixMessage {
     private String raw;
     private final Map<String, String> fields = new HashMap<>();
+    private Socket destination;
 
     public FixMessage() {}
 
@@ -36,6 +38,10 @@ public class FixMessage {
         return set(key, String.valueOf(value));
     }
 
+    public void setDestination(Socket destination) {
+        this.destination = destination;
+    }
+
     public String getRaw() {
         return raw;
     }
@@ -50,6 +56,10 @@ public class FixMessage {
 
     public double getDouble(String key) {
         return Double.parseDouble(fields.get(key));
+    }
+
+    public Socket getDestination() {
+        return destination;
     }
 
     @Override

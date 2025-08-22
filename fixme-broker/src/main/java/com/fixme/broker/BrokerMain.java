@@ -17,13 +17,24 @@ public class BrokerMain {
         System.out.println("Broker connected. ID: " + id);
 
         // Example: send a BUY order to market with ID 200000
+        // FixMessage msg = new FixMessage()
+        //     .set("ID", id)
+        //     .set("Target", "200000")
+        //     .set("Type", "BUY")
+        //     .set("Instrument", "IBM")
+        //     .set("Qty", 10)
+        //     .set("Price", 135.50);
+        // out.println(msg.toString());
+
         FixMessage msg = new FixMessage()
-            .set("ID", id)
-            .set("Target", "200000")
-            .set("Type", "BUY")
-            .set("Instrument", "IBM")
-            .set("Qty", 10)
+            .set("MsgType", "D")         // New Order - Single
+            .set("SenderCompID", id)
+            .set("TargetCompID", "200000")
+            .set("Symbol", "IBM")
+            .set("Side", 1)            // 1 = Buy, 2 = Sell
+            .set("OrderQty", 10)
             .set("Price", 135.50);
+
         out.println(msg.toString());
 
         // Listen for responses
@@ -31,6 +42,8 @@ public class BrokerMain {
         while ((line = in.readLine()) != null) {
             System.out.println("Broker received: " + line);
         }
+
+        socket.close();
     }
 }
 

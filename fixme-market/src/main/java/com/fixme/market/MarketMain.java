@@ -22,12 +22,14 @@ public class MarketMain {
             System.out.println("Market received: " + line);
 
             FixMessage msg = new FixMessage(line);
-            int brokerId = msg.getInt("ID");
-            msg.set("Target", brokerId);
-            msg.set("ID", id);
+            int brokerId = msg.getInt("SenderCompID");
+            msg.set("TargetCompID", brokerId);
+            msg.set("SenderCompID", id);
             // Very simple: accept all orders
             out.println(msg);
         }
+
+        socket.close();
     }
 }
 

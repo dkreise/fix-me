@@ -7,10 +7,10 @@ public class ValidatorHandler extends Handler {
     public void handle(FixMessage message) {
         // Validate the message
         if (isValid(message)) {
-            System.out.println("Message is valid: " + message);
+            System.out.println("Message is VALID: " + message);
             super.handle(message); // Call next handler in the chain
         } else {
-            System.out.println("Invalid message: " + message);
+            System.out.println("INVALID message: " + message);
             // Handle invalid message (e.g., log, send error response, etc.)
         }
     }

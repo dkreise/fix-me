@@ -12,9 +12,8 @@ public abstract class Handler {
     }
 
     public void handle(FixMessage message) {
-        System.out.println("HANDLER " + this.getClass().getSimpleName() + " HANDLING MESSAGE: " + message);
+        System.out.println("HANDLER " + this.getClass().getSimpleName());
         if (next != null) {
-            System.out.println("CALLING NEXT HANDLER");
             next.handle(message);
         } else {
             System.out.println("CHAIN STOPPED");

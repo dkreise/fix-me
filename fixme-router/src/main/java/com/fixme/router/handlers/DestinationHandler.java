@@ -16,7 +16,7 @@ public class DestinationHandler extends Handler {
 
     @Override
     public void handle(FixMessage message) {
-        int targetId = message.getInt("Target");
+        int targetId = message.getInt("TargetCompID");
         Socket destination = null;
         if (brokers.containsKey(targetId)) {
             destination = brokers.get(targetId);
@@ -27,7 +27,7 @@ public class DestinationHandler extends Handler {
             // Handle case where no destination is found (e.g., log, send error response, etc.)
             return;
         }
-        
+
         message.setDestination(destination);
         System.out.println("Message destination set to: " + destination);
         super.handle(message); 

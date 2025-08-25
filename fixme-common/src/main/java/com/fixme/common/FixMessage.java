@@ -13,14 +13,17 @@ public class FixMessage {
     public static final Map<String, Integer> TAGS = Map.ofEntries(
         Map.entry("BeginString", 8),
         Map.entry("BodyLength", 9),
-        Map.entry("MsgType", 35),
+        Map.entry("MsgType", 35),      // D=NewOrderSingle, 8=ExecutionReport, 3=Reject
         Map.entry("SenderCompID", 49),
         Map.entry("TargetCompID", 56),
         Map.entry("Symbol", 55),
-        Map.entry("Side", 54),
+        Map.entry("Side", 54),        // 1=Buy, 2=Sell
         Map.entry("OrderQty", 38),
         Map.entry("Price", 44),
-        Map.entry("CheckSum", 10)
+        Map.entry("CheckSum", 10),
+        Map.entry("ExecType", 150),   // 0=New, 2=Filled, 8=Reject
+        Map.entry("OrdStatus", 39),   // 0=New, 2=Filled, 8=Rejected
+        Map.entry("Text", 58)         // free text for reject reasons
     );
 
     public FixMessage() {}

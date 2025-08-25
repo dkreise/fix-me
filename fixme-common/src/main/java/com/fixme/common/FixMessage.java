@@ -2,7 +2,6 @@ package com.fixme.common;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.StringJoiner;
 import java.net.Socket;
 
 public class FixMessage {
@@ -111,7 +110,7 @@ public class FixMessage {
         return full.toString();
     }
 
-    private int calculateBodyLength() {
+    public int calculateBodyLength() {
         StringBuilder body = new StringBuilder();
         for (Map.Entry<Integer, String> entry : fields.entrySet()) {
             if (entry.getKey() == TAGS.get("BeginString") || entry.getKey() == TAGS.get("BodyLength") || entry.getKey() == TAGS.get("CheckSum")) {
@@ -129,5 +128,14 @@ public class FixMessage {
         }
 
         return checkSum % 256;
+    }
+
+    public String buildWithoutCheckSum() {
+        StringBuilder sb = new StringBuilder();
+        for (var entry : fields.entrySet()) {
+            if (entry.getKey() == TAGS.get("CheckSum")) continue;
+            sb.append(entry.getKey()).append("=").append(entry.getValue()).append(SOH);
+        }
+        return sb.toString();
     }
 }
